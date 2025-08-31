@@ -18,9 +18,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report, confusion_matrix
 
-from google.colab import files
-files.upload()
-
 
 df = pd.read_csv("sentiment_data/training.1600000.processed.noemoticon.csv",
                  encoding='latin-1',
@@ -109,9 +106,6 @@ import joblib
 joblib.dump(model, "sentiment_model.pkl")
 joblib.dump(vectorizer, "tfidf_vectorizer.pkl")
 
-from google.colab import files
-files.download("sentiment_model.pkl")
-files.download("tfidf_vectorizer.pkl")
 
 import streamlit as st
 import joblib
@@ -146,6 +140,12 @@ if st.button("Analyze"):
     else:
         st.warning("Please enter some text to analyze.")
 
+from kaggle.api.kaggle_api_extended import KaggleApi
 
-from google.colab import files
-files.download("sentiment_app.py")
+api = KaggleApi()
+api.authenticate()
+
+# List datasets
+datasets = api.dataset_list(search="wine", page_size=5)
+for d in datasets:
+    print(d)
